@@ -37,6 +37,9 @@
 #include <pybind11/numpy.h>
 #endif
 
+// YOLO NGP
+#include <networking.h>
+
 #include <thread>
 
 struct GLFWwindow;
@@ -486,6 +489,7 @@ public:
 	uint32_t m_seed = 1337;
 #ifdef NGP_GUI
 	GLFWwindow* m_glfw_window = nullptr;
+	YoloNerf::NetworkHandler* network_handler = nullptr;
 	struct SecondWindow {
 		GLFWwindow* window = nullptr;
 		GLuint program = 0;

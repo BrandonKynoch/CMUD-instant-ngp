@@ -1,6 +1,7 @@
 /.vscode
 /.vs
 /build*
+/data
 /figures
 /out
 /results

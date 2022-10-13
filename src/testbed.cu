@@ -1903,6 +1903,9 @@ void Testbed::init_window(int resw, int resh, bool hidden, bool second_window) {
 #endif
 	glfwSwapInterval(0); // Disable vsync
 
+	network_handler = new YoloNerf::NetworkHandler();
+	printf("\nNetwork handler initialized\n");
+
 	glfwSetWindowUserPointer(m_glfw_window, this);
 	glfwSetDropCallback(m_glfw_window, [](GLFWwindow* window, int count, const char** paths) {
 		Testbed* testbed = (Testbed*)glfwGetWindowUserPointer(window);
@@ -1955,6 +1958,11 @@ void Testbed::init_window(int resw, int resh, bool hidden, bool second_window) {
 		Testbed* testbed = (Testbed*)glfwGetWindowUserPointer(window);
 		if (testbed) {
 			testbed->redraw_next_frame();
+
+			// CONTINUE HERE
+			// Use 
+			// glBlitFramebuffer
+			// https://stackoverflow.com/questions/52730886/how-to-use-a-renderbuffer-and-glblit-to-render-to-four-windows-with-glfw
 		}
 	});
 
@@ -2869,6 +2877,11 @@ void Testbed::render_frame(const Matrix<float, 3, 4>& camera_matrix0, const Matr
 			render_buffer.overlay_false_color(metadata.resolution, to_srgb, m_fov_axis, m_stream.get(), err_data, error_map_res, average_error.data(), m_nerf.training.error_overlay_brightness, m_render_ground_truth);
 		}
 	}
+
+	//auto buffer_in_res = render_buffer.in_resolution();
+	//printf("Setting res to: %d, %d\n", (int) buffer_in_res.x(), (int) buffer_in_res.y());
+	//network_handler->ResizePixelBuffer((uint32_t) buffer_in_res.x(), (uint32_t) buffer_in_res.y());
+	network_handler->SendFrame();
 
 	CUDA_CHECK_THROW(cudaStreamSynchronize(m_stream.get()));
 }

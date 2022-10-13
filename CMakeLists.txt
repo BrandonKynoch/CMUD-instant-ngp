@@ -230,6 +230,9 @@ list(APPEND NGP_SOURCES
 	src/tinyexr_wrapper.cu
 	src/tinyobj_loader_wrapper.cpp
 	src/triangle_bvh.cu
+	
+	src/networking.cpp
+	include/networking.h
 )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
