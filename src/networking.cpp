@@ -71,8 +71,9 @@ void NetworkHandler::AwaitConnections() {
 }
 
 void NetworkHandler::SendFrame() {
-    // Should actually have external thread only set flag on this instance
-    // The code below should execute in a separate thread so as to not freeze up user application
+    // Todo: ping python appilcation with one byte
+    // if response is '1' -> ready_to_send_frame = true
+    // else -> ready_to_send_frame = false
 
     if (!ready_to_send_frame || python_socket < 0) { // Acts as a lock for this function
         return; // Wait till next frame has rendered to try again

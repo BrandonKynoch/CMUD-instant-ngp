@@ -31,7 +31,7 @@
 #ifdef _WIN32
 #define PYTHON_CLIENT_PORT "28790"
 #else
-#define PYTHON_CLIENT_PORT 28508
+#define PYTHON_CLIENT_PORT 28509
 #endif
 
 
