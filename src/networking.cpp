@@ -6,7 +6,6 @@ NetworkHandler::NetworkHandler() :
     pixels_out(NULL),
     buffer_width(0),
     buffer_height(0),
-    ready_to_send_frame(TRUE),
     python_socket(-1)
 {
 #ifdef _WIN32
@@ -74,11 +73,17 @@ void NetworkHandler::SendFrame() {
     // Todo: ping python appilcation with one byte
     // if response is '1' -> ready_to_send_frame = true
     // else -> ready_to_send_frame = false
+    if (python_socket < 0 ) {
+        return;
+    }
 
-    if (!ready_to_send_frame || python_socket < 0) { // Acts as a lock for this function
+    bool ping = TRUE;
+    send(python_socket, (void*) ping, 1, 0);
+    recv(python_socket, &ping, 1, 0); // Blocks thread
+
+    if (!ping) { // Acts as a lock for this function
         return; // Wait till next frame has rendered to try again
     }
-    ready_to_send_frame = false;
 
     /// Fetch and package frame buffer
     glReadPixels(
@@ -111,9 +116,6 @@ void NetworkHandler::SendFrame() {
     // Receive client response
     ReceiveClientResponse(); // Blocks thread
     printf("%s\n", client_response);
-
-
-    ready_to_send_frame = true;
 }
 
 void NetworkHandler::ReceiveClientResponse() {

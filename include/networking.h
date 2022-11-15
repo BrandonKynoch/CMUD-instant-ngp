@@ -31,7 +31,7 @@
 #ifdef _WIN32
 #define PYTHON_CLIENT_PORT "28790"
 #else
-#define PYTHON_CLIENT_PORT 28509
+#define PYTHON_CLIENT_PORT 28501
 #endif
 
 
@@ -52,7 +52,6 @@ namespace YoloNerf {
 		GLubyte* pixels_out;
 		uint32_t buffer_width, buffer_height;
 		int buffer_size; // buffer_width * buffer_height * 3 + (sizeof(uint32_t) * 2)
-		bool ready_to_send_frame;
 
 		int python_socket;
 		pthread_t python_socket_thread;
