@@ -77,11 +77,11 @@ void NetworkHandler::SendFrame() {
         return;
     }
 
-    bool ping = TRUE;
-    send(python_socket, (void*) ping, 1, 0);
-    recv(python_socket, &ping, 1, 0); // Blocks thread
+    char ping = 0x0;
+    send(python_socket, (char*) &ping, sizeof(char), 0);
+    recv(python_socket, &ping, sizeof(char), 0); // Blocks thread
 
-    if (!ping) { // Acts as a lock for this function
+    if (ping == 0x0) { // Acts as a lock for this function
         return; // Wait till next frame has rendered to try again
     }
 
